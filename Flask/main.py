@@ -224,11 +224,6 @@ def logout():
 
     return render_template('login.html')
 
-@app.route('/holamundo'):
-def holamundo():
-    return "hola mundo"
-
-
 
 app.secret_key = "12345"
 
