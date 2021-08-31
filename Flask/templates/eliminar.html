@@ -1,0 +1,16 @@
+{% extends "base/base.html" %}
+{% block title %}
+    Simple Comercio
+{% endblock %}
+{% block content %}
+<div class="login-box">
+    <h1>Eliminar usuario</h1>
+    <form method="post" action="{{ url_for('eliminar') }}">
+        <label for="username">Usuario</label>
+        <p><input name="username" type="text"></p>
+
+        <input type="submit" value="Eliminar">
+        <a href="{{ url_for('inicio') }}">Volver</a>
+    </form>
+</div>
+{% endblock %}

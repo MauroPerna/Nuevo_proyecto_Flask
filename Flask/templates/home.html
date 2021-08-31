@@ -1,0 +1,36 @@
+{% extends "base/base.html" %}
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+{% endblock %}
+{% block title %}
+    Simple Comercio
+{% endblock %}
+{% block content %}
+<div width="10px">
+    <canvas id="grafica"></canvas>
+</div>
+
+<script>
+    var grafica = document.getElementById("grafica");
+    var myChart = new Chart(grafica, {
+        type:'pie',
+        data: {
+            labels: {{ labels | safe }},
+            datasets: [{ 
+                label: "Data points",
+                data: {{ values | safe }},
+                backgroundColor: ["#ff6384", "#36a2eb", "#ffcd56"]
+            }]
+        }
+        });
+</script>
+
+<div class="div">
+    {% for item in col %}
+    <section>
+        <h3>{{ item[0] }}</h3>
+        <p>porcentaje: {{ item[1] }}</p>   
+    </section>
+    {% endfor %}
+</div>
+{% endblock %}

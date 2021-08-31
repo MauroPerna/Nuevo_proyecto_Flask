@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+{% block title %}
+    Simple Comercio
+{% endblock %}
+{% block content %}
+<nav> 
+    <a href="#" class="nav-enlace">Inicio</a>
+    <a href="{{ url_for('signup') }}" class="nav-enlace">Crear</a>
+    <a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a>
+    <a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a>
+    <a href="{{ url_for('index') }}" class="nav-enlace">Buscar</a>
+    <a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a>
+</nav>
+<div class="div">
+    {% for item in colaboradores %}
+    <section>
+        <h3>{{ item.username }}</h3>
+        <p>Monto acumulado: {{ item.monto_inicial }}</p>
+        <p>Fecha ultima actualizacion: {{ item.fecha_ultima_actualizacion }}</p>     
+    </section>
+    {% endfor %}
+</div>
+{% endblock %}

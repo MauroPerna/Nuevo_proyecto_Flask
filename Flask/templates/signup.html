@@ -1,0 +1,26 @@
+{% extends "base/base.html" %}
+{% block title %}
+    Simple Comercio
+{% endblock %}
+{% block content %}
+<div class="login-box">
+    <img src="{{ url_for('static', filename= 'img/logo1.jpg') }}" alt=""class="avatar" alt="Avatar Image">
+    <h1>Signup</h1>
+    <form method="post" action="{{ url_for('signup') }}">
+        <label for="username">Usuario</label>
+        <p><input name="username" type="text"></p>
+        <label for="email">Email</label>
+        <p><input name="email" type="email"></p>
+        <label for="password">Password</label>
+        <p><input name="password" type="password"></p>
+        <label for="fecha_inicio_actividad">Fecha en que inicio actividad:</label>
+        <p><input name="fecha_inicio_actividad" type="date"></p>
+        <label for="monto_inicial">Monto Inicial:</label>
+        <p><input name="monto_inicial" type="number"></p>
+        <label for="fechaUltimaAct">Fecha desde ultima actualización:</label>
+        <p><input name="fechaUltimaAct" type="date"></p>
+        <input type="submit" value="Crear">
+        <a href="{{ url_for('inicio') }}">Volver</a>
+    </form>
+</div>
+{% endblock %}

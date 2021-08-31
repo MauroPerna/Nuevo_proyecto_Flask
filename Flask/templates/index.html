@@ -1,0 +1,12 @@
+{% extends "base/base.html" %}
+{% block title %}
+    Simple Comercio
+{% endblock %}
+{% block content %}
+    <h1>Bienvenido!</h1>
+    <form method="get" action="{{ url_for('search') }}">
+        <p><input type="text" name="username"></p>
+        <input type="submit" value="Search">
+        <a href="{{ url_for('inicio') }}">Volver</a>
+    </form>
+{% endblock %}
