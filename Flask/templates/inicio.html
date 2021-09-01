@@ -4,14 +4,28 @@
 {% endblock %}
 {% block content %}
 <nav> 
-    <a href="#" class="nav-enlace">Inicio</a>
+    <a href="{{ url_for('inicio') }}" class="nav-enlace">Inicio</a>
     <a href="{{ url_for('signup') }}" class="nav-enlace">Crear</a>
     <a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a>
     <a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a>
     <a href="{{ url_for('index') }}" class="nav-enlace">Buscar</a>
     <a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a>
 </nav>
-<div class="div">
+
+<form method="post" action="">
+    <select name="col" id="colaborador">
+        <option value="" disabled selected>--SELECCIONE UN COLABORADOR--</option>
+        {% for item in colaboradores %}
+            <option value={{ item.surname }}>{{item.username}}</option>
+        {% endfor %}
+    </select>
+    <div>
+        <input type="submit" value="Seleccionar">
+        <a href="{{ url_for('inicio') }}">Volver</a>
+    </div>
+</form>
+
+<!-- <div class="div">
     {% for item in colaboradores %}
     <section>
         <h3>{{ item.username }}</h3>
@@ -19,5 +33,5 @@
         <p>Fecha ultima actualizacion: {{ item.fecha_ultima_actualizacion }}</p>     
     </section>
     {% endfor %}
-</div>
+</div> -->
 {% endblock %}

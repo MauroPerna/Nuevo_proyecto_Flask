@@ -3,6 +3,14 @@
     Simple Comercio
 {% endblock %}
 {% block content %}
+<nav> 
+    <a href="{{ url_for('inicio') }}" class="nav-enlace">Inicio</a>
+    <a href="{{ url_for('signup') }}" class="nav-enlace">Crear</a>
+    <a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a>
+    <a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a>
+    <a href="{{ url_for('index') }}" class="nav-enlace">Buscar</a>
+    <a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a>
+</nav>
 <div class="login-box">
     <h1>Eliminar usuario</h1>
     <form method="post" action="{{ url_for('eliminar') }}">

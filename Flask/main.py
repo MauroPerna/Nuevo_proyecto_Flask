@@ -9,6 +9,7 @@ from sqlalchemy import update
 dbdir = "sqlite:///" + os.path.abspath(os.getcwd()) + "/col.db"
 
 app = Flask(__name__)
+app.secret_key = "12345"
 app.config["SQLALCHEMY_DATABASE_URI"] = dbdir
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
@@ -113,28 +114,67 @@ def login():
 
 @app.route('/inicio')
 def inicio():
-    colaboradores = User.query.order_by(User.username).all()
-    return render_template('inicio.html', colaboradores=colaboradores)
+    if "username" in session:
+        user_name = session["username"]
+        email = session["username"]
+        user = User.query.filter_by(username=user_name).first()
+        email = User.query.filter_by(email=email).first()
+        if user.is_admin == True:
+            colaboradores = User.query.order_by(User.username).all()
+            return render_template('inicio.html', colaboradores=colaboradores)
+        elif email.is_admin == True:
+            colaboradores = User.query.order_by(User.username).all()
+            return render_template('inicio.html', colaboradores=colaboradores)
+        return "Vista protegida solo para el admin"
+    return "Necesitas logearte primero"
 
 @app.route("/signup", methods = ["GET", "POST"])
 def signup():
-    if request.method == "POST":
-        hashed_pw = generate_password_hash(request.form["password"], method="sha256")
-        new_user = User(
-            username=request.form["username"],
-            email=request.form["email"],
-            password=hashed_pw,
-            fecha_inicio_actividad=request.form["fecha_inicio_actividad"],
-            monto_inicial=request.form["monto_inicial"],
-            fecha_ultima_actualizacion=request.form["fechaUltimaAct"]
-        )
-        db.session.add(new_user)
-        db.session.commit()
+    if "username" in session:
+        user_name = session["username"]
+        email = session["username"]
+        user = User.query.filter_by(username=user_name).first()
+        email = User.query.filter_by(email=email).first()
+        if user.is_admin == True:
+            if request.method == "POST":
+                hashed_pw = generate_password_hash(request.form["password"], method="sha256")
+                new_user = User(
+                    username=request.form["username"],
+                    email=request.form["email"],
+                    password=hashed_pw,
+                    fecha_inicio_actividad=request.form["fecha_inicio_actividad"],
+                    monto_inicial=request.form["monto_inicial"],
+                    fecha_ultima_actualizacion=request.form["fechaUltimaAct"]
+                )
+                db.session.add(new_user)
+                db.session.commit()
 
-        str = "El usuario {} fue registrado".format(request.form["username"])
-        return render_template('done.html', str=str)
+                str = "El usuario {} fue registrado".format(request.form["username"])
+                return render_template('done.html', str=str)
 
-    return render_template('signup.html')
+            return render_template('signup.html')
+        elif email.is_admin == True:
+            if request.method == "POST":
+                hashed_pw = generate_password_hash(request.form["password"], method="sha256")
+                new_user = User(
+                    username=request.form["username"],
+                    email=request.form["email"],
+                    password=hashed_pw,
+                    fecha_inicio_actividad=request.form["fecha_inicio_actividad"],
+                    monto_inicial=request.form["monto_inicial"],
+                    fecha_ultima_actualizacion=request.form["fechaUltimaAct"]
+                )
+                db.session.add(new_user)
+                db.session.commit()
+
+                str = "El usuario {} fue registrado".format(request.form["username"])
+                return render_template('done.html', str=str)
+
+            return render_template('signup.html')
+        
+        return "Vista protegida solo para el admin"
+
+    return "debes logearte primero"
 
 @app.route('/crear')
 def crear():
@@ -145,39 +185,102 @@ def crear():
 
 @app.route("/update")
 def update():
-    return render_template('actualizar.html')
+    if "username" in session:
+        user_name = session["username"]
+        email = session["username"]
+        user = User.query.filter_by(username=user_name).first()
+        email = User.query.filter_by(email=email).first()
+        if user.is_admin == True:
+            return render_template('actualizar.html')
+        elif email.is_admin == True:
+            return render_template('actualizar.html')
+        return "Vista protegida solo para el admin"
+    return "Debes Logearte primero"
 
 @app.route("/actualizar", methods = ["GET", "POST"])
 def actualizar():
-    if request.method == "POST":
-        username = request.form['username']
-        montoMensual = request.form['MontoMensual']
-        colaborador = User.query.filter_by(username=username).first()
-        if colaborador:      
-            montoFinal = str(User.capitalizacion(username, montoMensual))
-            fecha_actual = datetime.now()
-            fechaActual = datetime.strftime(fecha_actual, '%Y-%m-%d')
-            User.modificarColaborador(username, montoFinal, fechaActual)
-            string = "El usuario {} fue actualizado".format(request.form["username"])
-            return render_template('userUpdate.html', str=string)
-        return "El usuario que intenta actualizar no se encuentra en la base de datos"
-    return "Esta vista pertenece al admin, usted no puede ingresar"
+    if "username" in session:
+        user_name = session["username"]
+        email = session["username"]
+        user = User.query.filter_by(username=user_name).first()
+        email = User.query.filter_by(email=email).first()
+        if user.is_admin == True:
+            if request.method == "POST":
+                username = request.form['username']
+                montoMensual = request.form['MontoMensual']
+                colaborador = User.query.filter_by(username=username).first()
+                if colaborador:      
+                    montoFinal = str(User.capitalizacion(username, montoMensual))
+                    fecha_actual = datetime.now()
+                    fechaActual = datetime.strftime(fecha_actual, '%Y-%m-%d')
+                    User.modificarColaborador(username, montoFinal, fechaActual)
+                    string = "El usuario {} fue actualizado".format(request.form["username"])
+                    return render_template('userUpdate.html', str=string)
+                return "El usuario que intenta actualizar no se encuentra en la base de datos"
+            return redirect('/actualizar')
+        elif email.is_admin == True:
+            if request.method == "POST":
+                username = request.form['username']
+                montoMensual = request.form['MontoMensual']
+                colaborador = User.query.filter_by(username=username).first()
+                if colaborador:      
+                    montoFinal = str(User.capitalizacion(username, montoMensual))
+                    fecha_actual = datetime.now()
+                    fechaActual = datetime.strftime(fecha_actual, '%Y-%m-%d')
+                    User.modificarColaborador(username, montoFinal, fechaActual)
+                    string = "El usuario {} fue actualizado".format(request.form["username"])
+                    return render_template('userUpdate.html', str=string)
+                return "El usuario que intenta actualizar no se encuentra en la base de datos"
+            return redirect('/actualizar')
+
+        return "Esta vista pertenece al admin, usted no puede ingresar"
+    return "Debes Logearte primero"
             
 @app.route('/delete')
 def delete():
-    return render_template('eliminar.html')
+    if "username" in session:
+        user_name = session["username"]
+        email = session["username"]
+        user = User.query.filter_by(username=user_name).first()
+        email = User.query.filter_by(email=email).first()
+        if user.is_admin == True:
+            return render_template('eliminar.html')
+        elif email.is_admin == True:
+            return render_template('eliminar.html')
+        return "Vista protegida solo para el admin"
+    return "Debes Logearte primero"
 
 @app.route('/eliminar', methods = ["GET", "POST"])
 def eliminar():
-    if request.method == "POST":
-        username = request.form['username']
-        colaborador = User.query.filter_by(username=username).first()
-        if colaborador:
-            db.session.delete(colaborador)
-            db.session.commit()
-        string = "El usuario {} fue eliminado".format(username)
-        return render_template('userDelete.html', str=string)
-    return "Esta vista pertenece al admin, usted no puede ingresar"
+    if "username" in session:
+        user_name = session["username"]
+        email = session["username"]
+        user = User.query.filter_by(username=user_name).first()
+        email = User.query.filter_by(email=email).first()
+        if user.is_admin == True:
+            if request.method == "POST":
+                username = request.form['username']
+                colaborador = User.query.filter_by(username=username).first()
+                if colaborador:
+                    db.session.delete(colaborador)
+                    db.session.commit()
+                string = "El usuario {} fue eliminado".format(username)
+                return render_template('userDelete.html', str=string)
+            return redirect('/eliminar')
+        if email.is_admin == True:
+            if request.method == "POST":
+                username = request.form['username']
+                colaborador = User.query.filter_by(username=username).first()
+                if colaborador:
+                    db.session.delete(colaborador)
+                    db.session.commit()
+                string = "El usuario {} fue eliminado".format(username)
+                return render_template('userDelete.html', str=string)
+            return redirect('/eliminar')
+
+
+        return "Esta vista pertenece al admin, usted no puede ingresar"
+    return "Debes Logearte primero"
 
 @app.route('/home')
 def home():
@@ -190,18 +293,29 @@ def home():
 
     return "debes logearte primero"
 
+# @app.route('/fetch', methods = ["GET", "POST"])
+# def fetch():
+#     if "username" in session:
+#         if request.method == "POST":
+
+
+
 @app.route('/read')
 def index():
-    return render_template('index.html')
+    if "username" in session:
+        return render_template('index.html')
+    return "debes logearte primero"
 
 @app.route('/search')
 def search():
-    user_name = request.args.get("username")
-    colaborador = User.query.filter_by(username=user_name).first()
-    if colaborador:
-        return colaborador.username
+    if "username" in session:
+        user_name = request.args.get("username")
+        colaborador = User.query.filter_by(username=user_name).first()
+        if colaborador:
+            return colaborador.username
 
-    return "El usuario {} no esta en la base de datos".format(user_name)
+        return "El usuario {} no esta en la base de datos".format(user_name)
+    return "debes logearte primero"
 
 @app.route('/insert/default')
 def insert_default():
@@ -224,8 +338,6 @@ def logout():
 
     return render_template('login.html')
 
-
-app.secret_key = "12345"
 
 if __name__ == '__main__':
     db.create_all()
