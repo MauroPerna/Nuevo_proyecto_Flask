@@ -7,9 +7,14 @@
 {% endblock %}
 {% block content %}
 <nav> 
+    <a href="{{ url_for('inicio') }}" class="nav-enlace">Inicio</a>
+    <a href="{{ url_for('signup') }}" class="nav-enlace">Crear</a>
+    <a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a>
+    <a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a>
+    <a href="{{ url_for('grafica') }}" class="nav-enlace">Gráfico</a>
     <a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a>
 </nav>
-<div width="10px" height="10px">
+<div width="10px">
     <canvas id="grafica"></canvas>
 </div>
 

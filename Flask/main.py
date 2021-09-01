@@ -3,13 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from sqlalchemy import update
-
+from flask_wtf.csrf import CSRFProtect 
 
 dbdir = "sqlite:///" + os.path.abspath(os.getcwd()) + "/col.db"
 
 app = Flask(__name__)
 app.secret_key = "12345"
+csrf = CSRFProtect(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = dbdir
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
@@ -127,6 +127,13 @@ def inicio():
             return render_template('inicio.html', colaboradores=colaboradores)
         return "Vista protegida solo para el admin"
     return "Necesitas logearte primero"
+
+@app.route('/select', methods = ["GET", "POST"])
+def select():
+    if request.method == 'POST':
+        username = request.form['username']
+        colaborador = User.query.filter_by(username=username).first()
+        return render_template('infoCol.html', colaborador = colaborador)
 
 @app.route("/signup", methods = ["GET", "POST"])
 def signup():
@@ -282,39 +289,31 @@ def eliminar():
         return "Esta vista pertenece al admin, usted no puede ingresar"
     return "Debes Logearte primero"
 
+@app.route('/grafica')
+def grafica():
+    if "username" in session:
+        user_name = session["username"]
+        email = session["username"]
+        user = User.query.filter_by(username=user_name).first()
+        email = User.query.filter_by(email=email).first()
+        if user.is_admin or email.is_admin  == True:
+            col = Colaborador.dataPush()
+            labels = [row[0] for row in col]
+            values = [row[1] for row in col]
+            return render_template('graficaAdmin.html', labels=labels, values=values, col=col)
+        
+        
+        return "Esta vista pertenece al admin, usted no puede ingresar"
+    return "debes logearte primero"
+
 @app.route('/home')
 def home():
     if "username" in session:
         col = Colaborador.dataPush()
         labels = [row[0] for row in col]
         values = [row[1] for row in col]
-        #return render_template('home.html', col = col)
         return render_template('home.html', labels=labels, values=values, col=col)
 
-    return "debes logearte primero"
-
-# @app.route('/fetch', methods = ["GET", "POST"])
-# def fetch():
-#     if "username" in session:
-#         if request.method == "POST":
-
-
-
-@app.route('/read')
-def index():
-    if "username" in session:
-        return render_template('index.html')
-    return "debes logearte primero"
-
-@app.route('/search')
-def search():
-    if "username" in session:
-        user_name = request.args.get("username")
-        colaborador = User.query.filter_by(username=user_name).first()
-        if colaborador:
-            return colaborador.username
-
-        return "El usuario {} no esta en la base de datos".format(user_name)
     return "debes logearte primero"
 
 @app.route('/insert/default')
@@ -342,3 +341,26 @@ def logout():
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True)
+
+
+
+
+
+
+
+# @app.route('/read')
+# def index():
+#     if "username" in session:
+#         return render_template('index.html')
+#     return "debes logearte primero"
+
+# @app.route('/search')
+# def search():
+#     if "username" in session:
+#         user_name = request.args.get("username")
+#         colaborador = User.query.filter_by(username=user_name).first()
+#         if colaborador:
+#             return colaborador.username
+
+#         return "El usuario {} no esta en la base de datos".format(user_name)
+#     return "debes logearte primero"

@@ -7,6 +7,7 @@
     <img src="{{ url_for('static', filename= 'img/logo1.jpg') }}" alt=""class="avatar" alt="Avatar Image">
     <h1>Login</h1>
     <form method="post" action="{{ url_for('login') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <label for="username">Usuario</label>
         <p><input name="username" type="text" placeholder="Ingresa tu usario"></p>
         <label for="password">Contraseña</label>
