@@ -1,11 +1,10 @@
 body {
   margin: 0;
   padding: 0;
-  background: rgb(255,255,255);
-  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(93,166,33,1) 100%, rgba(0,212,255,1) 100%);
+  background: rgb(2,0,36);
+  background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(93,166,33,1) 0%, rgba(255,255,255,1) 100%);
   background-size: cover;
   font-family: sans-serif;
-  height: 100vh;
 }
 
 .login-box {
@@ -29,6 +28,16 @@ body {
   top: -50px;
   left: calc(50% - 50px);
   object-fit: cover;
+}
+
+.registro{
+  width: 320px;
+  height: 830px;
+  background: #000;
+  color: #fff;
+  margin-top: 20%;
+  left: 50%;
+  padding: 70px 30px;
 }
 
 .login-box h1 {
@@ -185,3 +194,133 @@ nav{
     display: flex;
     justify-content: space-around;
 }
+
+html {
+  font-family: sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+  border: 2px solid rgb(200,200,200);
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+}
+
+td, th {
+  border: 1px solid rgb(190,190,190);
+  padding: 10px 20px;
+}
+
+th {
+  background-color: rgb(235,235,235);
+}
+
+td {
+  text-align: center;
+}
+
+tr:nth-child(even) td {
+  background-color: rgb(250,250,250);
+}
+
+tr:nth-child(odd) td {
+  background-color: rgb(245,245,245);
+}
+
+caption {
+  padding: 10px;
+}
+
+.grafico{
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  left: 30%;
+  margin-top: 30px;
+}
+
+.div {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+h1 {
+  font-family: 'Inconsolata', monospace;
+  font-weight: 700;
+}
+
+h2 {
+  font-family: 'Inconsolata', monospace;
+  font-weight: 700;
+}
+
+h3 {
+  font-family: 'Inconsolata', monospace;
+  font-weight: 700;
+  font-size: 25px;
+}
+
+h4 {
+  font-family: 'Inconsolata', monospace;
+  font-weight: 700;
+}
+
+p {
+  font-family: 'Inconsolata', monospace;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+/*-------------- tabla detalles_colaborador --------------- */
+
+.copywrite {
+  width: 300px;
+  margin: 80px auto 0;
+  border-top: 1px solid #cccccc;
+  text-align: center;
+  font-weight: 10px;
+  color: #cccccc;
+}
+
+.paging-nav {
+  text-align: center;
+  padding-top: 2px;
+}
+.paging-nav a{
+  margin: auto 1px;
+  text-decoration: none;
+  display: inline-block;
+  padding: 1px 7px;
+  background: #91b9e6;
+  color: white;
+  border-radius: 3px;
+}
+.paging-nav .selected-page{
+  background: #187ed5;
+  font-weight: bold;
+}
+.paging-nav, #tableData {
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+#tableData {
+  margin-top: 50px;
+  border-spacing: 0;
+  border: 1px dotted #ccc;
+}
+#tableData th {
+  background: #e5f0fb;
+  text-align: left;
+  border-bottom: 2px solid #91b9e6;
+}
+#tableData td {
+  padding: 3px 10px;
+  border-bottom: 1px dotted #ccd;
+}
+
+/*----------------------------------------------------------- */

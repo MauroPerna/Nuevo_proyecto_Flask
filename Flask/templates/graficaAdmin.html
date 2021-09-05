@@ -12,9 +12,10 @@
     <a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a>
     <a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a>
     <a href="{{ url_for('grafica') }}" class="nav-enlace">Gráfico</a>
+    <a href="{{ url_for('cambiar_password_admin') }}" class="nav-enlace">Cambiar Password</a>
     <a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a>
 </nav>
-<div width="10px">
+<div class="grafico">
     <canvas id="grafica"></canvas>
 </div>
 
@@ -27,7 +28,7 @@
             datasets: [{ 
                 label: "Data points",
                 data: {{ values | safe }},
-                backgroundColor: ["#ff6384", "#36a2eb", "#ffcd56"]
+                backgroundColor: ["#9b2226", "#001219", "#ae2012", "#005f73", "#bb3e03", "#0a9396", "#ca6702", "#ee9b00", "#e9d8a6", "#94d2bd"]
             }]
         }
         });
@@ -37,7 +38,7 @@
     {% for item in col %}
     <section>
         <h3>{{ item[0] }}</h3>
-        <p>porcentaje: {{ item[1] }}</p>   
+        <p>Cantidad de acciones: {{ item[1] * num }}</p>   
     </section>
     {% endfor %}
 </div>

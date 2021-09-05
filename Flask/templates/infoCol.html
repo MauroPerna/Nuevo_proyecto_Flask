@@ -9,6 +9,7 @@
     <a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a>
     <a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a>
     <a href="{{ url_for('grafica') }}" class="nav-enlace">Gráfico</a>
+    <a href="{{ url_for('cambiar_password_admin') }}" class="nav-enlace">Cambiar Password</a>
     <a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a>
 </nav>
 <div class="div">
@@ -18,7 +19,45 @@
         <p>Fecha ultima actualizacion: {{ colaborador.fecha_ultima_actualizacion }}</p>     
     </section>
 </div>
-
-
-
+<div class="div">
+    <section>
+        {% if user|length == 1  %}
+            <h3>{{ user[0] }}</h3>
+        {% else %}
+            <table>
+                <colgroup>
+                    <col style="background-color: gray">
+                    <col span="2" style="background-color:yellow;"">
+                </colgroup>    
+                <thead>
+                    <tr style="background-color: black; color:black">
+                        <th>Fecha</th>
+                        <th>Monto Mensual</th>
+                        <th>Concepto del aporte</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in user %}
+                        <tr>
+                            <th>{{ item[1] }}</th>
+                            <th>{{ item[2] }}</th>
+                            <th>{{ item[3] }}</th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </section>
+</div>
 {% endblock %}
+
+
+
+
+
+
+
+
+        
+
+ 

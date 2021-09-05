@@ -9,15 +9,19 @@
     <a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a>
     <a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a>
     <a href="{{ url_for('grafica') }}" class="nav-enlace">Gráfico</a>
+    <a href="{{ url_for('cambiar_password_admin') }}" class="nav-enlace">Cambiar Password</a>
     <a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a>
 </nav>
 <div class="login-box">
     <h1>Actualizar usuario</h1>
     <form method="post" action="{{ url_for('actualizar') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <label for="username">Usuario</label>
         <p><input name="username" type="text"></p>
         <label for="montoMensual">Monto mensual a capitalizar:</label>
         <p><input name="MontoMensual" type='number'></p>
+        <label for="conceptoAporte">Concepto del aporte:</label>
+        <p><input name="conceptoAporte" type='text'></p>
 
         <input type="submit" value="Actualizar">
         <a href="{{ url_for('inicio') }}">Volver</a>
