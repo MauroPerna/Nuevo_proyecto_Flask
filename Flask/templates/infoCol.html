@@ -2,21 +2,32 @@
 {% block title %}
     Simple Comercio
 {% endblock %}
+{% block body %}
+<body class="bg-color">
 {% block content %}
-<nav> 
-    <a href="{{ url_for('inicio') }}" class="nav-enlace">Inicio</a>
-    <a href="{{ url_for('signup') }}" class="nav-enlace">Crear</a>
-    <a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a>
-    <a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a>
-    <a href="{{ url_for('grafica') }}" class="nav-enlace">Gráfico</a>
-    <a href="{{ url_for('cambiar_password_admin') }}" class="nav-enlace">Cambiar Password</a>
-    <a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a>
+<div class="hamburger">
+	<div class="_layer -top"></div>
+	<div class="_layer -mid"></div>
+	<div class="_layer -bottom"></div>
+</div>
+<nav class="menuppal">
+    <ul>
+        <li><a href="{{ url_for('inicio') }}" class="nav-enlace">Inicio</a></li>
+        <li><a href="{{ url_for('signup') }}" class="nav-enlace">Crear</a></li>
+        <li><a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a></li>
+        <li><a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a></li>
+        <li><a href="{{ url_for('grafica') }}" class="nav-enlace">Gráfico</a></li>
+        <li><a href="{{ url_for('cambiar_password_admin') }}" class="nav-enlace">Cambiar Password</a></li>
+        <li><a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a></li>
+    </ul> 
 </nav>
-<div class="div">
+<div class="div div-detalles">
     <section>
-        <h3>{{ colaborador.username }}</h3>
-        <p>Monto acumulado: {{ colaborador.monto_inicial }}</p>
-        <p>Fecha ultima actualizacion: {{ colaborador.fecha_ultima_actualizacion }}</p>     
+        <div class="cont-detalles">
+            <h3 class="section-tittle">{{ colaborador.username }}</h3>
+            <p>Monto acumulado: {{ colaborador.monto_inicial }}</p>
+            <p>Fecha ultima actualizacion: {{ colaborador.fecha_ultima_actualizacion }}</p>  
+        </div>   
     </section>
 </div>
 <div class="div">
@@ -52,6 +63,9 @@
         $('#tableData').paging({limit:5});
     });
 </script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/menu.js') }}"></script>
+{% endblock %}
+</body>
 {% endblock %}
 
 

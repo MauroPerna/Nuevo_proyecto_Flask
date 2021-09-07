@@ -2,34 +2,51 @@
 {% block title %}
     Simple Comercio
 {% endblock %}
-{% block content %}
-<nav> 
-    <a href="{{ url_for('inicio') }}" class="nav-enlace">Inicio</a>
-    <a href="{{ url_for('signup') }}" class="nav-enlace">Crear</a>
-    <a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a>
-    <a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a>
-    <a href="{{ url_for('grafica') }}" class="nav-enlace">Gráfico</a>
-    <a href="{{ url_for('cambiar_password_admin') }}" class="nav-enlace">Cambiar Password</a>
-    <a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a>
-</nav>
-<div class="login-box registro">
-    <img src="{{ url_for('static', filename= 'img/logo1.jpg') }}" alt=""class="avatar" alt="Avatar Image">
-    <h1>Crear Colaborador</h1>
-    <form method="post" action="{{ url_for('signup') }}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <label for="username">Usuario</label>
-        <p><input name="username" type="text"></p>
-        <label for="email">Email</label>
-        <p><input name="email" type="email"></p>
-        <label for="password">Password</label>
-        <p><input name="password" type="password"></p>
-        <label for="fecha_inicio_actividad">Fecha en que inicio actividad:</label>
-        <p><input name="fecha_inicio_actividad" type="date"></p>
-        <label for="monto_inicial">Monto Inicial:</label>
-        <p><input name="monto_inicial" type="number"></p>
-        <label for="fechaUltimaAct">Fecha desde ultima actualización:</label>
-        <p><input name="fechaUltimaAct" type="date"></p>
-        <input type="submit" value="Crear">
-    </form>
-</div>
+{% block body %}
+<body class="bg-color">
+
+    {% block content %}
+
+    <div class="hamburger">
+        <div class="_layer -top"></div>
+        <div class="_layer -mid"></div>
+        <div class="_layer -bottom"></div>
+    </div>
+    <nav class="menuppal">
+        <ul>
+            <li><a href="{{ url_for('inicio') }}" class="nav-enlace">Inicio</a></li>
+            <li><a href="{{ url_for('signup') }}" class="nav-enlace">Crear</a></li>
+            <li><a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a></li>
+            <li><a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a></li>
+            <li><a href="{{ url_for('grafica') }}" class="nav-enlace">Gráfico</a></li>
+            <li><a href="{{ url_for('cambiar_password_admin') }}" class="nav-enlace">Cambiar Password</a></li>
+            <li><a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a></li>
+        </ul> 
+    </nav>
+    <div class="login-box registro">
+        <img src="{{ url_for('static', filename= 'img/logo1.jpg') }}" alt=""class="avatar" alt="Avatar Image">
+        <h1>Crear Colaborador</h1>
+        <form method="post" action="{{ url_for('signup') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <label for="username">Usuario</label>
+            <p><input name="username" type="text"></p>
+            <label for="email">Email</label>
+            <p><input name="email" type="email"></p>
+            <label for="password">Password</label>
+            <p><input name="password" type="password"></p>
+            <label for="fecha_inicio_actividad">Fecha en que inicio actividad:</label>
+            <p><input name="fecha_inicio_actividad" type="date"></p>
+            <label for="monto_inicial">Monto Inicial:</label>
+            <p><input name="monto_inicial" type="number"></p>
+            <label for="fechaUltimaAct">Fecha desde ultima actualización:</label>
+            <p><input name="fechaUltimaAct" type="date"></p>
+            <input type="submit" value="Crear">
+        </form>
+    </div>
+    <div class="div=relleno">
+        
+    </div>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/menu.js') }}"></script>
+    {% endblock %}
+</body>
 {% endblock %}

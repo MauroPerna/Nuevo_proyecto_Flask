@@ -2,31 +2,49 @@
 {% block title %}
     Simple Comercio
 {% endblock %}
+{% block body %}
+<body class="bg-color">
 {% block content %}
-<nav> 
-    <a href="{{ url_for('inicio') }}" class="nav-enlace">Inicio</a>
-    <a href="{{ url_for('signup') }}" class="nav-enlace">Crear</a>
-    <a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a>
-    <a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a>
-    <a href="{{ url_for('grafica') }}" class="nav-enlace">Gráfico</a>
-    <a href="{{ url_for('cambiar_password_admin') }}" class="nav-enlace">Cambiar Password</a>
-    <a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a>
+<div class="hamburger">
+	<div class="_layer -top"></div>
+	<div class="_layer -mid"></div>
+	<div class="_layer -bottom"></div>
+</div>
+<nav class="menuppal">
+    <ul>
+        <li><a href="{{ url_for('inicio') }}" class="nav-enlace">Inicio</a></li>
+        <li><a href="{{ url_for('signup') }}" class="nav-enlace">Crear</a></li>
+        <li><a href="{{ url_for('update') }}" class="nav-enlace">Actualizar</a></li>
+        <li><a href="{{ url_for('delete') }}" class="nav-enlace">Eliminar</a></li>
+        <li><a href="{{ url_for('grafica') }}" class="nav-enlace">Gráfico</a></li>
+        <li><a href="{{ url_for('cambiar_password_admin') }}" class="nav-enlace">Cambiar Password</a></li>
+        <li><a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a></li>
+    </ul> 
 </nav>
-<form method="post" action="{{ url_for('select') }}">
+<form method="post" action="{{ url_for('select') }}" class="contenedor-form">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <div>
+    
         <h4><label>Escriba el nombre del usuario que quiere consultar:</label></h4>
-        <select name="col" id="col">
-            <option value="" disabled selected>--COLABORADORES EXISTENTES--</option>
-            {% for item in colaboradores %}
-                <option value={{ item.surname }}>{{item.username}}</option>
-            {% endfor %}
-        </select>
-        <input type="text" name="username"/><br/>
-        <h4>Seleccione el rango de fechas que desea consultar:</h4>
-        <h4><label>Desde:<input type="date" name="fecha1"/></label></h4>
-        <h4><label>Hasta:<input type="date" name="fecha2"/></label></h4>
-        <input type="submit" value="Seleccionar">
+        <div class="form-inputs-colab">
+            <select name="col" id="col">
+                
+                <option value="" disabled selected>--COLABORADORES EXISTENTES--</option>
+                {% for item in colaboradores %}
+                    <option value={{ item.surname }}>{{item.username}}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="username" class="input-user" placeholder="Ingresa colaborador"/><br/>
+        </div>
+        <h4 class="my-2">Seleccione el rango de fechas que desea consultar:</h4>
+        <div class="form-inputs my-2">
+            <h4><label>Desde:<input type="date" name="fecha1"/></label></h4>
+            <h4><label>Hasta:<input type="date" name="fecha2"/></label></h4>
+            <input type="submit" value="Seleccionar" class="btn btn-primary">
+        </div>
     </div>
 </form>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/menu.js') }}"></script>
+{% endblock %}
+</body>
 {% endblock %}

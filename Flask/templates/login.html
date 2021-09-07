@@ -2,17 +2,23 @@
 {% block title %}
     Simple Comercio
 {% endblock %}
-{% block content %}
-<div class="login-box">
-    <img src="{{ url_for('static', filename= 'img/logo1.jpg') }}" alt=""class="avatar" alt="Avatar Image">
-    <h1>Login</h1>
-    <form method="post" action="{{ url_for('login') }}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <label for="username">Usuario</label>
-        <p><input name="username" type="text" placeholder="Ingresa tu usario"></p>
-        <label for="password">Contraseña</label>
-        <p><input name="password" type="password" placeholder="Ingresa tu contraseña"></p>
-        <input type="submit" value="Log In">
-    </form>
-</div>
+{% block body %}
+<body class="bg-color">
+    {% block content %}
+
+
+    <div class="login-box">
+        <img src="{{ url_for('static', filename= 'img/logo1.jpg') }}" alt=""class="avatar" alt="Avatar Image">
+        <h1>Login</h1>
+        <form method="post" action="{{ url_for('login') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <label for="username">Usuario</label>
+            <p><input name="username" type="text" placeholder="Ingresa tu usario"></p>
+            <label for="password">Contraseña</label>
+            <p><input name="password" type="password" placeholder="Ingresa tu contraseña"></p>
+            <input type="submit" value="Log In">
+        </form>
+    </div>
+    {% endblock %}
+</body>
 {% endblock %}
