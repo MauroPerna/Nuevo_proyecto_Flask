@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, escape, redirect, url_for, flash
+from flask import Flask, render_template, request, session, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,17 +7,25 @@ from flask_wtf.csrf import CSRFProtect
 import secrets
 from dotenv import load_dotenv
 
-load_dotenv()
-
+# URL DATABASE config=development
 dbdir = "sqlite:///" + os.path.abspath(os.getcwd()) + "/col.db"
 
+# Create instance flask app
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(20)
 csrf = CSRFProtect(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = dbdir
+
+# BASE DE DATOS SQLite config=development
+#app.config["SQLALCHEMY_DATABASE_URI"] = dbdir
+
+# BASE DE DATOS MySQL config=production
+load_dotenv()
+pass_db_admin = os.getenv('DB_ADMIN_KEY')
+app.config["SQLALCHEMY_DATABASE_URI"] = f'mysql+pymysql://root:{pass_db_admin}@localhost/col'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
+# Modelo para crear colaboradores
 class User(db.Model):
     __tablename__ = 'colaboradores'
     id = db.Column(db.Integer, primary_key=True)
@@ -89,6 +97,7 @@ class User(db.Model):
     def generate_password_hashed(password):
         return generate_password_hash(password)
 
+# Modelo para crear registros de colaboradores
 class Record(db.Model):
     __tablename__ = 'registros'
     id = db.Column(db.Integer, primary_key=True)
@@ -150,6 +159,7 @@ class Record(db.Model):
             listaDatosColaborador.append((str))
             return listaDatosColaborador
            
+# Clase colaborador + funciones de filtrado de datos 
 class Colaborador():
         
     def montoTotal():
@@ -189,18 +199,24 @@ def login():
             if check_password_hash(user.password, request.form["password"]):
                 if user.is_admin == True:
                     session["username"] = user.username
-                    return redirect('/inicio')
+                    flash("Te has logeado exitosamente!!", "success")
+                    return redirect(url_for('inicio'))
                 session["username"] = user.username
-                return redirect('/home')
+                flash("Te has logeado exitosamente!!", "success")
+                return redirect(url_for('home'))
             
         elif email:
             if check_password_hash(email.password, request.form["password"]):
                 if email.is_admin == True:
                     session["username"] = email.username
-                    return redirect('/inicio')
+                    flash("Te has logeado exitosamente!!", "success")
+                    return redirect(url_for('inicio'))
                 session["username"] = email.username
-                return redirect('/home')
-        return "Los datos que has ingresado no coinciden con un usuario registrado"
+                flash("Te has logeado exitosamente!!", "success")
+                return redirect(url_for('home'))
+
+        flash("Los datos que has ingresado no coinciden con un usuario registrado", "error")
+        return redirect(url_for('login'))
 
     return render_template('login.html')
 
@@ -218,9 +234,10 @@ def cambiar_password_admin():
                 confirmacion_password = request.form['confirmacionPassword']
                 if nuevo_password == confirmacion_password:
                     User.cambiar_password(usuario, nuevo_password)
+                    flash("Contraseñadel usuario {} cambiada exitosamente!!".format(usuario), "success")
                     return redirect(url_for('inicio'))
                 else:
-                    flash('las contraseñas no coinciden')
+                    flash('las contraseñas no coinciden', "error")
                     return render_template('/cambio_password_admin.html')
             else:
                 return render_template('/cambio_password_admin.html')
@@ -231,9 +248,10 @@ def cambiar_password_admin():
                 confirmacion_password = request.form['confirmacionPassword']
                 if nuevo_password == confirmacion_password:
                     User.cambiar_password(usuario, nuevo_password)
+                    flash("Contraseña del usuario {} cambiada exitosamente!!".format(usuario), "success")
                     return redirect(url_for('inicio'))
                 else:
-                    flash('las contraseñas no coinciden')
+                    flash('las contraseñas no coinciden', "error")
                     return render_template('/cambio_password_admin.html')
             else:
                 return render_template('/cambio_password_admin.html')
@@ -252,9 +270,10 @@ def cambiar_password():
             confirmacion_password = request.form['confirmacionPassword']
             if nuevo_password == confirmacion_password:
                 User.cambiar_password(user.username, nuevo_password)
+                flash("La contraseña ha sido cambiada exitosamente!!", "success")
                 return redirect(url_for('home'))
             else:
-                flash('las contraseñas no coinciden')
+                flash('las contraseñas no coinciden', "error")
                 return render_template('/cambio_password.html')
         else:
             return render_template('/cambio_password.html')
@@ -319,9 +338,8 @@ def signup():
                 db.session.commit()
                 usuario = User.query.filter_by(username=request.form["username"]).first()
 
-                str = "El usuario {} fue registrado".format(request.form["username"])
-                return render_template('done.html', str=str)
-
+                flash("El usuario {} fue registrado".format(request.form["username"]), "error")
+                return redirect(url_for('signup'))
             return render_template('signup.html')
         elif email.is_admin == True:
             if request.method == "POST":
@@ -337,19 +355,12 @@ def signup():
                 db.session.add(new_user)
                 db.session.commit()
 
-                str = "El usuario {} fue registrado".format(request.form["username"])
-                return render_template('done.html', str=str)
+                flash("El usuario {} fue registrado".format(request.form["username"]), "error")
+                return redirect(url_for('signup'))
 
             return render_template('signup.html')
         
         return "Vista protegida solo para el admin"
-
-    return "debes logearte primero"
-
-@app.route('/crear')
-def crear():
-    if "username" in session:
-        return "Tu eres %s" % escape(session["username"])
 
     return "debes logearte primero"
 
@@ -386,10 +397,11 @@ def actualizar():
                     fechaActual = datetime.strftime(fecha_actual, '%Y-%m-%d')
                     User.modificarColaborador(username, montoFinal, fechaActual)
                     Record.register(username, montoMensual, conceptoAporte)
-                    string = "El usuario {} fue actualizado".format(request.form["username"])
-                    return render_template('userUpdate.html', str=string)
-                return "El usuario que intenta actualizar no se encuentra en la base de datos"
-            return redirect('/actualizar')
+                    flash("El usuario {} fue actualizado".format(request.form["username"]), "success")
+                    return redirect(url_for('update'))
+                flash("El usuario que intenta actualizar no se encuentra en la base de datos", "error")
+                return redirect(url_for('update'))
+            return redirect(url_for('update'))
         elif email.is_admin == True:
             if request.method == "POST":
                 username = request.form['username']
@@ -401,11 +413,12 @@ def actualizar():
                     fecha_actual = datetime.now()
                     fechaActual = datetime.strftime(fecha_actual, '%Y-%m-%d')
                     User.modificarColaborador(username, montoFinal, fechaActual)
-                    Record.register(username, fecha_actual, montoMensual, conceptoAporte)
-                    string = "El usuario {} fue actualizado".format(request.form["username"])
-                    return render_template('userUpdate.html', str=string)
-                return "El usuario que intenta actualizar no se encuentra en la base de datos"
-            return redirect('/actualizar')
+                    Record.register(username, montoMensual, conceptoAporte)
+                    flash("El usuario {} fue actualizado".format(request.form["username"]), "success")
+                    return redirect(url_for('update'))
+                flash("El usuario que intenta actualizar no se encuentra en la base de datos", "error")
+                return redirect(url_for('update'))
+            return redirect(url_for('update'))
 
         return "Esta vista pertenece al admin, usted no puede ingresar"
     return "Debes Logearte primero"
@@ -439,9 +452,11 @@ def eliminar():
                 if colaborador:
                     db.session.delete(colaborador)
                     db.session.commit()
-                string = "El usuario {} fue eliminado".format(username)
-                return render_template('userDelete.html', str=string)
-            return redirect('/eliminar')
+                    flash("El usuario {} fue eliminado".format(username), "success")
+                    return redirect(url_for('delete'))
+                flash("El usuario {} no se encuentra en la base de datos".format(username), "success")
+                return redirect(url_for('delete'))
+            return redirect(url_for('delete'))
         if email.is_admin == True:
             if request.method == "POST":
                 username = request.form['username']
@@ -450,9 +465,11 @@ def eliminar():
                 if colaborador:
                     db.session.delete(colaborador)
                     db.session.commit()
-                string = "El usuario {} fue eliminado".format(username)
-                return render_template('userDelete.html', str=string)
-            return redirect('/eliminar')
+                    flash("El usuario {} fue eliminado".format(username), "success")
+                    return redirect(url_for('delete'))
+                flash("El usuario {} no se encuentra en la base de datos".format(username), "success")
+                return redirect(url_for('delete'))
+            return redirect(url_for('delete'))
 
 
         return "Esta vista pertenece al admin, usted no puede ingresar"
@@ -520,12 +537,15 @@ def insert_default():
     admin.set_password(pass_admin)
     db.session.add(admin)
     db.session.commit()
-    return "el admin fue creado"
+    flash("El admin fue creado", "success")
+    return redirect(url_for('login'))
 
 @app.route('/logout')
 def logout():
+    username = session["username"]
     session.pop("username", None)
 
+    flash("Hasta la proxima {}".format(username), "success")
     return render_template('login.html')
 
 

@@ -1,0 +1,28 @@
+{% macro render_messages(messages) %}
+<div class="container">
+    {% with messages = get_flashed_messages(category_filter = ["success"]) %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <div class="alert alert-warning">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <li class="{{ category }}">{{ message }}</li> 
+                    </div>
+                {% endfor %}
+            </ul> 
+        {% endif %}
+    {% endwith %}
+    {% with messages = get_flashed_messages(category_filter = ["error"]) %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <div class="alert alert-warning">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <li class="{{ category }}">{{ message }}</li> 
+                    </div>
+                {% endfor %}
+            </ul> 
+        {% endif %}
+    {% endwith %}
+</div>
+{% endmacro %}

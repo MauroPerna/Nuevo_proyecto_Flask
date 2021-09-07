@@ -24,31 +24,34 @@
         {% if user|length == 1  %}
             <h3>{{ user[0] }}</h3>
         {% else %}
-            <table>
-                <colgroup>
-                    <col style="background-color: gray">
-                    <col span="2" style="background-color:yellow;"">
-                </colgroup>    
+            <table id="tableData">
                 <thead>
-                    <tr style="background-color: black; color:black">
-                        <th>Fecha</th>
-                        <th>Monto Mensual</th>
-                        <th>Concepto del aporte</th>
-                    </tr>
-                </thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Monto Mensual</th>
+                    <th>Concepto del aporte</th>
+                </tr>
                 <tbody>
                     {% for item in user %}
-                        <tr>
-                            <th>{{ item[1] }}</th>
-                            <th>{{ item[2] }}</th>
-                            <th>{{ item[3] }}</th>
-                        </tr>
+                    <tr>
+                        <th>{{ item[1] }}</th>
+                        <th>{{ item[2] }}</th>
+                        <th>{{ item[3] }}</th>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
         {% endif %}
     </section>
 </div>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/paging.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#tableData').paging({limit:5});
+    });
+</script>
 {% endblock %}
 
 

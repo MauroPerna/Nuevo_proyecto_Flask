@@ -12,21 +12,20 @@
     <a href="{{ url_for('cambiar_password_admin') }}" class="nav-enlace">Cambiar Password</a>
     <a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a>
 </nav>
-<select name="col" id="col">
-    <option value="" disabled selected>--COLABORADORES EXISTENTES--</option>
-    {% for item in colaboradores %}
-        <option value={{ item.surname }}>{{item.username}}</option>
-    {% endfor %}
-</select>
 <form method="post" action="{{ url_for('select') }}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <div>
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <label>Escriba el nombre del usuario que quiere consultar:</label>
+        <h4><label>Escriba el nombre del usuario que quiere consultar:</label></h4>
+        <select name="col" id="col">
+            <option value="" disabled selected>--COLABORADORES EXISTENTES--</option>
+            {% for item in colaboradores %}
+                <option value={{ item.surname }}>{{item.username}}</option>
+            {% endfor %}
+        </select>
         <input type="text" name="username"/><br/>
-        <h4>Seleccione el rango de fechas que desea consultar (formato de consulta yyyy-mm):</h4>
-        <label>Desde:<input type="date" name="fecha1"/></label><br/>
-        <label>Hasta:<input type="date" name="fecha2"/></label><br/>
+        <h4>Seleccione el rango de fechas que desea consultar:</h4>
+        <h4><label>Desde:<input type="date" name="fecha1"/></label></h4>
+        <h4><label>Hasta:<input type="date" name="fecha2"/></label></h4>
         <input type="submit" value="Seleccionar">
     </div>
 </form>

@@ -1,24 +1,26 @@
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+import mysql.connector
+import os
+from dotenv import load_dotenv
 
-db = SQLAlchemy()
+load_dotenv()
+pass_db_admin = os.getenv('DB_ADMIN_KEY')
 
-class User(db.Model):
-    __tablename__ = 'colaboradores'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=False, nullable=False)
-    password = db.Column(db.String(250), unique=False, nullable=False)
-    is_admin = db.Column(db.Boolean, default=False)
-    fecha_inicio_actividad = db.Column(db.String(120), unique=False, nullable=False)
-    monto_inicial = db.Column(db.String(120), unique=False, nullable=False)
-    fecha_ultima_actualizacion = db.Column(db.String(120), unique=False, nullable=False)
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password= pass_db_admin,
+    auth_plugin='caching_sha2_password',
+)
 
-    def __repr__(self):
-        return '<User %r>' % self.username
+my_cursor = mydb.cursor()
 
-    def set_password(self, password):
-        self.password = generate_password_hash(password)
+# CREATE DATABASE
+#my_cursor.execute("CREATE DATABASE col")
 
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
+# DELETE DATABASE
+#my_cursor.execute("DROP DATABASE col")
+
+
+my_cursor.execute("SHOW DATABASES")
+for db in my_cursor:
+    print(db)
