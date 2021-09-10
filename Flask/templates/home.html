@@ -1,4 +1,5 @@
 {% extends "base/base.html" %}
+{% from "base/_render_elements.html" import render_messages %}
 {% block head %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
 {% endblock %}
@@ -7,6 +8,7 @@
 {% endblock %}
 {% block body %}
 <body class="bg-color">
+    {{ render_messages(messages) }}
 {% block content %}
 <div class="hamburger">
 	<div class="_layer -top"></div>

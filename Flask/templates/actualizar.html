@@ -1,9 +1,11 @@
 {% extends "base/base.html" %}
+{% from "base/_render_elements.html" import render_messages %}
 {% block title %}
     Simple Comercio
 {% endblock %}
 {% block body %}
 <body class="bg-color">
+    {{ render_messages(messages) }}
 {% block content %}
 <div class="hamburger">
 	<div class="_layer -top"></div>

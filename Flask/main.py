@@ -16,12 +16,12 @@ app.secret_key = secrets.token_hex(20)
 csrf = CSRFProtect(app)
 
 # BASE DE DATOS SQLite config=development
-#app.config["SQLALCHEMY_DATABASE_URI"] = dbdir
+app.config["SQLALCHEMY_DATABASE_URI"] = dbdir
 
 # BASE DE DATOS MySQL config=production
 load_dotenv()
-pass_db_admin = os.getenv('DB_ADMIN_KEY')
-app.config["SQLALCHEMY_DATABASE_URI"] = f'mysql+pymysql://root:{pass_db_admin}@localhost/col'
+# pass_db_admin = os.getenv('DB_ADMIN_KEY')
+# app.config["SQLALCHEMY_DATABASE_URI"] = f'mysql+pymysql://root:{pass_db_admin}@localhost/col'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
@@ -179,7 +179,7 @@ class Colaborador():
 
     def data_Filter(username):
         listaDatosColaborador = []
-        user1 = Record.query.filter_by(name=username).all()
+        user1 = Record.query.filter_by(name=username).all().asc()
         for i in user1:
             nombre = i.name
             fecha = i.fecha
@@ -188,6 +188,10 @@ class Colaborador():
             listaDatosColaborador.append((nombre, fecha, monto_mensual, descripcion))
         return listaDatosColaborador
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error/404.html')
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -234,7 +238,7 @@ def cambiar_password_admin():
                 confirmacion_password = request.form['confirmacionPassword']
                 if nuevo_password == confirmacion_password:
                     User.cambiar_password(usuario, nuevo_password)
-                    flash("Contraseñadel usuario {} cambiada exitosamente!!".format(usuario), "success")
+                    flash("Contraseña del usuario {} cambiada exitosamente!!".format(usuario), "success")
                     return redirect(url_for('inicio'))
                 else:
                     flash('las contraseñas no coinciden', "error")

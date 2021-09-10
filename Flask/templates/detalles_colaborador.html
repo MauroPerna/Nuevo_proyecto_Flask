@@ -1,4 +1,5 @@
 {% extends "base/base.html" %}
+{% from "base/_render_elements.html" import render_messages %}
 {% block head %}
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous"> -->
 {% endblock %}
@@ -7,59 +8,60 @@
 {% endblock %}
 {% block body %}
 <body class="bg-color">
-{% block content %}
-<div class="hamburger">
-	<div class="_layer -top"></div>
-	<div class="_layer -mid"></div>
-	<div class="_layer -bottom"></div>
-</div>
-<nav class="menuppal">
-    <ul>
-        <li><a href="{{ url_for('home') }}" class="nav-enlace">Inicio</a></li>
-        <li><a href="{{ url_for('detalles') }}" class="nav-enlace">Detalles</a></li>
-        <li><a href="{{ url_for('cambiar_password') }}" class="nav-enlace">Cambiar Password</a></li>
-        <li><a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a></li>
-    </ul> 
-</nav>
-<div class="div div-detalles">
-    <section>
-      <div class="cont-detalles">
-        <h3 class="section-tittle">{{ colaborador.username }}</h3>
-        <p>Monto acumulado: {{ colaborador.monto_inicial }}</p>
-        <p>Fecha ultima actualizacion: {{ colaborador.fecha_ultima_actualizacion }}</p> 
-      </div>    
-    </section>
-  
-</div>
-<table id="tableData" class="tabla">
-  <thead>
-    <tr>
-      <th>Fecha</th>
-      <th>Monto Mensual</th>
-      <th>Concepto del aporte</th>
-    </tr>
-    <tbody>
-      {% for item in dataUser %}
-        <tr>
-          <th>{{ item[1] }}</th>
-          <th>{{ item[2] }}</th>
-          <th>{{ item[3] }}</th>
-        </tr>
-      {% endfor %}
-    </tbody>
-</table>
+  {{ render_messages(messages) }}
+  {% block content %}
+  <div class="hamburger">
+    <div class="_layer -top"></div>
+    <div class="_layer -mid"></div>
+    <div class="_layer -bottom"></div>
+  </div>
+  <nav class="menuppal">
+      <ul>
+          <li><a href="{{ url_for('home') }}" class="nav-enlace">Inicio</a></li>
+          <li><a href="{{ url_for('detalles') }}" class="nav-enlace">Detalles</a></li>
+          <li><a href="{{ url_for('cambiar_password') }}" class="nav-enlace">Cambiar Password</a></li>
+          <li><a href="{{ url_for('logout') }}" class="nav-enlace">Salir</a></li>
+      </ul> 
+  </nav>
+  <div class="div div-detalles">
+      <section>
+        <div class="cont-detalles">
+          <h3 class="section-tittle">{{ colaborador.username }}</h3>
+          <p>Monto acumulado: {{ colaborador.monto_inicial }}</p>
+          <p>Fecha ultima actualizacion: {{ colaborador.fecha_ultima_actualizacion }}</p> 
+        </div>    
+      </section>
+    
+  </div>
+  <table id="tableData" class="tabla">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Monto Mensual</th>
+        <th>Concepto del aporte</th>
+      </tr>
+      <tbody>
+        {% for item in dataUser %}
+          <tr>
+            <th>{{ item[1] }}</th>
+            <th>{{ item[2] }}</th>
+            <th>{{ item[3] }}</th>
+          </tr>
+        {% endfor %}
+      </tbody>
+  </table>
 
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/paging.js') }}"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#tableData').paging({limit:5});
-    });
-</script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/menu.js') }}"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/paging.js') }}"></script>
+  <script type="text/javascript">
+      $(document).ready(function() {
+          $('#tableData').paging({limit:5});
+      });
+  </script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/menu.js') }}"></script>
 
-{% endblock %}
+  {% endblock %}
 </body>
 {% endblock %}
 

@@ -1,4 +1,3 @@
-{% from "base/_render_elements.html" import render_messages %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +19,6 @@
 </head>
 {% block body %}
 
-    {{ render_messages(messages) }}
     <main class="container">
     {% block content %}
     {% endblock %}
